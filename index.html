@@ -3,16 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream (Tamil Only)</title>
+    <title>Jod Streaming - Tamil Live</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            color: #ff9800;
+            text-transform: uppercase;
+        }
+        video {
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(255, 152, 0, 0.5);
+            width: 80%;
+            max-width: 900px;
+            height: auto;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+    </style>
 </head>
 <body>
-    <h2>Live Stream (Tamil Only)</h2>
-    <video id="video" controls autoplay muted width="720" height="400"></video>
+
+    <h1>Jod Streaming - Tamil Only</h1>
+    <video id="video" controls autoplay muted></video>
+
+    <p>Enjoy live Tamil streaming exclusively on Jod Streaming.</p>
+
+    <div class="footer">
+        &copy; 2025 Jod Streaming. All Rights Reserved.
+    </div>
 
     <script>
         var video = document.getElementById('video');
-        var videoSrc = "https://v18tataplaysyndication.akamaized.net/bpk-tv/Sports18_1_HD_voot_MOB/output03/index.m3u8?hdnea=exp=1742658254~acl=/*~hmac=bccdfe0fae9d1d43e50da28c6c3f9b67fbc128578a52b9e084fe550519a34aa8";
+        var videoSrc = "YOUR_TAMIL_AUDIO_M3U8_LINK"; // Replace this with Tamil audio m3u8 link
 
         if (Hls.isSupported()) {
             var hls = new Hls();
@@ -22,40 +55,15 @@
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
                 console.log("HLS.js Loaded");
 
-                // User interaction required for autoplay
                 document.body.addEventListener("click", function() {
                     video.muted = false;
                     video.play().catch(error => console.log("Autoplay blocked:", error));
                 }, { once: true });
-
-                var tamilTrackIndex = -1;
-                var audioTracks = hls.audioTracks;
-                
-                console.log("Audio Tracks Found:", audioTracks);
-                
-                // Find Tamil audio track
-                audioTracks.forEach((track, index) => {
-                    console.log(`Track ${index}: ${track.name} (${track.lang})`);
-                    if (track.name.toLowerCase().includes("tamil") || track.lang === "tam") {
-                        tamilTrackIndex = index;
-                    }
-                });
-
-                // Set Tamil as the default track
-                if (tamilTrackIndex !== -1) {
-                    console.log("Switching to Tamil audio track:", tamilTrackIndex);
-                    hls.audioTrack = tamilTrackIndex;
-                } else {
-                    console.warn("Tamil audio track not found!");
-                }
             });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        } else {
             video.src = videoSrc;
-            document.body.addEventListener("click", function() {
-                video.muted = false;
-                video.play().catch(error => console.log("Autoplay blocked:", error));
-            }, { once: true });
         }
     </script>
+
 </body>
 </html>
