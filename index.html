@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream</title>
+    <title>Live Stream (Tamil Only)</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-    <h2>Live Stream</h2>
+    <h2>Live Stream (Tamil Only)</h2>
     <video id="video" controls autoplay muted width="720" height="400"></video>
-    
-    <h3>Select Audio Track:</h3>
-    <select id="audioTracks"></select>
 
     <script>
         var video = document.getElementById('video');
         var videoSrc = "https://v18tataplaysyndication.akamaized.net/bpk-tv/Sports18_1_HD_voot_MOB/output03/index.m3u8?hdnea=exp=1742658254~acl=/*~hmac=bccdfe0fae9d1d43e50da28c6c3f9b67fbc128578a52b9e084fe550519a34aa8";
-        var audioSelect = document.getElementById('audioTracks');
 
         if (Hls.isSupported()) {
             var hls = new Hls();
@@ -32,23 +28,26 @@
                     video.play().catch(error => console.log("Autoplay blocked:", error));
                 }, { once: true });
 
+                var tamilTrackIndex = -1;
                 var audioTracks = hls.audioTracks;
+                
                 console.log("Audio Tracks Found:", audioTracks);
-
-                audioSelect.innerHTML = "";
+                
+                // Find Tamil audio track
                 audioTracks.forEach((track, index) => {
                     console.log(`Track ${index}: ${track.name} (${track.lang})`);
-                    var option = document.createElement("option");
-                    option.value = index;
-                    option.textContent = track.name || track.lang || "Track " + (index + 1);
-                    audioSelect.appendChild(option);
+                    if (track.name.toLowerCase().includes("tamil") || track.lang === "tam") {
+                        tamilTrackIndex = index;
+                    }
                 });
 
-                // Change audio track on selection
-                audioSelect.addEventListener("change", function () {
-                    console.log("Switching to audio track:", audioSelect.value);
-                    hls.audioTrack = parseInt(audioSelect.value);
-                });
+                // Set Tamil as the default track
+                if (tamilTrackIndex !== -1) {
+                    console.log("Switching to Tamil audio track:", tamilTrackIndex);
+                    hls.audioTrack = tamilTrackIndex;
+                } else {
+                    console.warn("Tamil audio track not found!");
+                }
             });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = videoSrc;
