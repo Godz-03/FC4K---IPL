@@ -3,27 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jod Streaming - Tamil Live</title>
+    <title>Godz Streaming</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
-            background-color: #121212;
+            background-color: #141414;
             color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             text-align: center;
+        }
+        .header {
+            font-size: 48px;
+            font-weight: bold;
+            color: red;
+            padding: 20px 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
             padding: 20px;
         }
-        h1 {
-            font-size: 36px;
-            color: #ff9800;
-            text-transform: uppercase;
-        }
         video {
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(255, 152, 0, 0.5);
-            width: 80%;
+            width: 100%;
             max-width: 900px;
             height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.5);
         }
         .footer {
             margin-top: 20px;
@@ -33,28 +40,21 @@
     </style>
 </head>
 <body>
-
-    <h1>Jod Streaming - Tamil Only</h1>
-    <video id="video" controls autoplay muted></video>
-
-    <p>Enjoy live Tamil streaming exclusively on Jod Streaming.</p>
-
-    <div class="footer">
-        &copy; 2025 Jod Streaming. All Rights Reserved.
+    <div class="header">Godz Streaming</div>
+    <div class="container">
+        <video id="video" controls autoplay muted></video>
+        <p>Watch Tamil-only streaming, exclusively on Godz.</p>
     </div>
-
+    <div class="footer">&copy; 2025 Godz Streaming. All Rights Reserved.</div>
     <script>
         var video = document.getElementById('video');
-        var videoSrc = "YOUR_TAMIL_AUDIO_M3U8_LINK"; // Replace this with Tamil audio m3u8 link
+        var videoSrc = "YOUR_TAMIL_AUDIO_M3U8_LINK"; // Replace with Tamil-only stream link
 
         if (Hls.isSupported()) {
             var hls = new Hls();
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
-
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                console.log("HLS.js Loaded");
-
                 document.body.addEventListener("click", function() {
                     video.muted = false;
                     video.play().catch(error => console.log("Autoplay blocked:", error));
@@ -64,6 +64,5 @@
             video.src = videoSrc;
         }
     </script>
-
 </body>
 </html>
