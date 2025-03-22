@@ -3,19 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream with Multi-Audio</title>
+    <title>Live Stream</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        body { text-align: center; background: #000; color: white; font-family: Arial, sans-serif; }
-        video { width: 80%; max-width: 800px; margin-top: 20px; border: 2px solid white; }
-        select { margin-top: 10px; padding: 5px; font-size: 16px; }
-    </style>
 </head>
 <body>
-    <h1>Live Stream</h1>
-    <video id="video" controls autoplay></video>
-    <br>
-    <label for="audioTracks">Select Audio:</label>
+    <h2>Live Stream</h2>
+    <video id="video" controls autoplay muted width="720" height="400"></video>
+    
+    <h3>Select Audio Track:</h3>
     <select id="audioTracks"></select>
 
     <script>
@@ -27,14 +22,22 @@
             var hls = new Hls();
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                video.play();
 
-                // Populate audio track dropdown
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                console.log("HLS.js Loaded");
+
+                // User interaction required for autoplay
+                document.body.addEventListener("click", function() {
+                    video.muted = false;
+                    video.play().catch(error => console.log("Autoplay blocked:", error));
+                }, { once: true });
+
                 var audioTracks = hls.audioTracks;
-                audioSelect.innerHTML = ""; // Clear previous entries
-                
+                console.log("Audio Tracks Found:", audioTracks);
+
+                audioSelect.innerHTML = "";
                 audioTracks.forEach((track, index) => {
+                    console.log(`Track ${index}: ${track.name} (${track.lang})`);
                     var option = document.createElement("option");
                     option.value = index;
                     option.textContent = track.name || track.lang || "Track " + (index + 1);
@@ -43,14 +46,16 @@
 
                 // Change audio track on selection
                 audioSelect.addEventListener("change", function () {
+                    console.log("Switching to audio track:", audioSelect.value);
                     hls.audioTrack = parseInt(audioSelect.value);
                 });
             });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = videoSrc;
-            video.addEventListener('loadedmetadata', function () {
-                video.play();
-            });
+            document.body.addEventListener("click", function() {
+                video.muted = false;
+                video.play().catch(error => console.log("Autoplay blocked:", error));
+            }, { once: true });
         }
     </script>
 </body>
