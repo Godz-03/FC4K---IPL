@@ -3,61 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Godz Streaming</title>
+    <title>FC4K Streaming</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
-            background-color: #141414;
-            color: white;
-            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
         .header {
-            font-size: 48px;
-            font-weight: bold;
-            color: red;
-            padding: 20px 0;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 20px;
+            font-size: 32px;
+            font-weight: 600;
+            color: #f00;
+            margin-bottom: 20px;
         }
         video {
             width: 100%;
-            max-width: 900px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.5);
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            opacity: 0.7;
+            max-width: 800px;
+            border: none;
+            outline: none;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="header">Godz Streaming</div>
-    <div class="container">
-        <video id="video" controls autoplay muted></video>
-        <p>Watch Tamil-only streaming, exclusively on Godz.</p>
-    </div>
-    <div class="footer">&copy; 2025 Godz Streaming. All Rights Reserved.</div>
+    <div class="header">FC4K Streaming</div>
+    <video id="video" controls autoplay muted playsinline></video>
     <script>
-        var video = document.getElementById('video');
-        var videoSrc = "https://prod-ent-live-gm.jiocinema.com/bpk-tv/JS_M1_IPL25_TAM_IDC_MOB/Fallback/JS_M1_IPL25_TAM_IDC_MOB-audio_75235_tam=75200-video=2093200.m3u8";
+        const video = document.getElementById('video');
+        const videoSrc = "https://prod-ent-live-gm.jiocinema.com/bpk-tv/JS_M1_IPL25_TAM_IDC_MOB/Fallback/JS_M1_IPL25_TAM_IDC_MOB-audio_75235_tam=75200-video=2093200.m3u8";
 
         if (Hls.isSupported()) {
-            var hls = new Hls();
+            const hls = new Hls();
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                document.body.addEventListener("click", function() {
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                document.body.addEventListener("click", () => {
                     video.muted = false;
-                    video.play().catch(error => console.log("Autoplay blocked:", error));
+                    video.play().catch(err => console.log("Autoplay failed:", err));
                 }, { once: true });
             });
         } else {
